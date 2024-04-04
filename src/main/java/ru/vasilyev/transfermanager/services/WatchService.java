@@ -1,8 +1,11 @@
 package ru.vasilyev.transfermanager.services;
 
 import jakarta.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import ru.vasilyev.transfermanager.component.FileValidator;
 
 import java.io.IOException;
 import java.nio.file.*;
@@ -12,8 +15,15 @@ import static ru.vasilyev.transfermanager.constants.ProjectConstants.DIRECTORY_P
 
 
 @Service
+@Slf4j
 public class WatchService {
 
+    private final FileValidator fileValidator;
+
+    @Autowired
+    public WatchService(FileValidator fileValidator) {
+        this.fileValidator = fileValidator;
+    }
 
     /**
      * Сервис, который следит за изменениями директории
@@ -29,16 +39,14 @@ public class WatchService {
 
         path.register(
                 watchService,
-                StandardWatchEventKinds.ENTRY_CREATE,
-                StandardWatchEventKinds.ENTRY_DELETE,
-                StandardWatchEventKinds.ENTRY_MODIFY);
+                StandardWatchEventKinds.ENTRY_CREATE
+        );
 
         WatchKey key;
         while ((key = watchService.take()) != null) {
             for (WatchEvent<?> event : key.pollEvents()) {
-                System.out.println(
-                        "Event kind:" + event.kind()
-                                + ". File affected: " + event.context() + ".");
+                log.info("На вход пришёл файл: " + event.context());
+                fileValidator.validateFile(event.context().toString());
             }
             key.reset();
         }
