@@ -1,5 +1,5 @@
 package ru.vasilyev.transfermanager.constants;
 
 public class ProjectConstants {
-    public final static String DIRECTORY_PATH = "ts-files\\process";
+    public final static String DIRECTORY_PATH = "C:\\Users\\nikva\\OneDrive\\Рабочий стол\\java projects\\ttest";
 }
