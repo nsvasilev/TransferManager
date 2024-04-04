@@ -1,10 +1,8 @@
-package ru.vasilyev.transfermanager.beans;
+package ru.vasilyev.transfermanager.services;
 
 import jakarta.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.nio.file.*;
@@ -12,17 +10,10 @@ import java.nio.file.*;
 import static ru.vasilyev.transfermanager.constants.ProjectConstants.DIRECTORY_PATH;
 
 
-/*
-    Посмотри иерархия аннотаций компонент
-     component -> Repository, Service, Configuration, Controller
-        Убрать компонент
- */
-@Configuration
-@Component
-public class WatchServiceConfig {
 
-    @Value("${directory.path}")
-    private String directoryPath;
+@Service
+public class WatchService {
+
 
     /**
      * Сервис, который следит за изменениями директории
@@ -30,7 +21,7 @@ public class WatchServiceConfig {
     @PostConstruct
     @Async
     public void watchService() throws IOException, InterruptedException {
-        WatchService watchService
+        java.nio.file.WatchService watchService
                 = FileSystems.getDefault().newWatchService();
 
         //Здесь мы меняем путь
