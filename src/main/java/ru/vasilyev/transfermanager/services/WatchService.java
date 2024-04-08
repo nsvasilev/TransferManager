@@ -16,7 +16,7 @@ import static ru.vasilyev.transfermanager.constants.ProjectConstants.DIRECTORY_P
 
 @Service
 @Slf4j
-public class WatchService {
+public class  WatchService {
 
     private final FileValidator fileValidator;
 

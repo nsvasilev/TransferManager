@@ -28,9 +28,10 @@ public class FileValidator {
             //Вынесли переменную directory_path под отдельную переменную за блок if (19 строка).
             //Прописали блок else с перемещением файла в папку error.
             try {
+                log.info("Файл нужного расширения.Проверяю на проверку структуры ");
+                ExelParser.checkedStructure();
                 Path Success = Paths.get(SUCCESS_PATH + fileName);
                 Files.move(Directory, Success);
-                log.info("Файл нужного расширения.Перенаправляю ");
             } catch (IOException e) {
                 System.out.println("ошибка ебаная");
 
