@@ -10,7 +10,7 @@ import ru.vasilyev.transfermanager.component.FileValidator;
 import java.io.IOException;
 import java.nio.file.*;
 
-import static ru.vasilyev.transfermanager.constants.ProjectConstants.DIRECTORY_PATH;
+import static ru.vasilyev.transfermanager.constants.DirectoryPaths.DIRECTORY_PATH;
 
 
 
@@ -19,10 +19,12 @@ import static ru.vasilyev.transfermanager.constants.ProjectConstants.DIRECTORY_P
 public class  WatchService {
 
     private final FileValidator fileValidator;
+    private final FileProcessService fileProcessService;
 
     @Autowired
-    public WatchService(FileValidator fileValidator) {
+    public WatchService(FileValidator fileValidator, FileProcessService fileProcessService) {
         this.fileValidator = fileValidator;
+        this.fileProcessService = fileProcessService;
     }
 
     /**
@@ -46,7 +48,7 @@ public class  WatchService {
         while ((key = watchService.take()) != null) {
             for (WatchEvent<?> event : key.pollEvents()) {
                 log.info("На вход пришёл файл: " + event.context());
-                fileValidator.validateFile(event.context().toString());
+                fileProcessService.processFile(event.context().toString());
             }
             key.reset();
         }
