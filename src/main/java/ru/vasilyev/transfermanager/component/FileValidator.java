@@ -1,8 +1,18 @@
 package ru.vasilyev.transfermanager.component;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import static ru.vasilyev.transfermanager.constants.DirectoryPaths.DIRECTORY_PATH;
 
 @Slf4j
 @Component
@@ -16,19 +26,35 @@ public class FileValidator {
         this.fileParser = fileParser;
     }
 
-    public boolean checkFileStructure(String fileName){
+    public boolean checkFileStructure(String fileName) throws FileNotFoundException {
+        FileInputStream fis = new FileInputStream(DIRECTORY_PATH + fileName);
+        int cellsNum;
+        try (Workbook workbook = new XSSFWorkbook(fis)) {
+            cellsNum = workbook.getSheetAt(0).getRow(0).getPhysicalNumberOfCells();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        if (cellsNum == 5) {
+            return true;
+
+        } else {
+            return false;
+        }
 
 
 
 
-        return true;
+
+
     }
 
     public boolean checkFileExtension(String fileName){
-
-
-
-        return false;
+        //Path Directory = Paths.get(DIRECTORY_PATH + fileName);
+        log.info("Проверяем файл: " + fileName);
+        String s = fileName.split("\\.")[1].toLowerCase();
+        log.info("Расширение файла: " + s);
+        if (s.equals("xlsx")) return true;
+        else {return false;}
     }
 
 
