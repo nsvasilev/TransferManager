@@ -36,6 +36,9 @@ public class FileParser {
             for (int n = 1; n < sheet.getPhysicalNumberOfRows(); n++) {
                 Row row = sheet.getRow(n);
                 FileInfo fileInfo = new FileInfo();
+                /**
+                 * Не используется - выпилить
+                 */
                 int i = row.getFirstCellNum();
                 fileInfo.setName(dataFormatter.formatCellValue(row.getCell(0)));
                 fileInfo.setSoname(dataFormatter.formatCellValue(row.getCell(1)));

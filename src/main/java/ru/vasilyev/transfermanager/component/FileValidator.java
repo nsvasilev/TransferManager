@@ -18,7 +18,9 @@ import static ru.vasilyev.transfermanager.constants.DirectoryPaths.DIRECTORY_PAT
 @Component
 public class FileValidator {
 
-
+    /**
+     * Не используется - выпилить
+     */
     private final FileParser fileParser;
 
     @Autowired
@@ -35,12 +37,6 @@ public class FileValidator {
             throw new RuntimeException(e);
         }
         return cellsNum == 5;
-
-
-
-
-
-
     }
 
     public boolean checkFileExtension(String fileName){
@@ -50,8 +46,6 @@ public class FileValidator {
         log.info("Расширение файла: " + s);
         return s.equals("xlsx");
     }
-
-
 
 
 //    public void validateFile(String fileName) {
