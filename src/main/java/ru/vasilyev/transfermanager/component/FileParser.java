@@ -7,17 +7,15 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Component;
-import ru.vasilyev.transfermanager.entities.FileInfo;
+import ru.vasilyev.transfermanager.dto.FileInfo;
 
-import javax.xml.crypto.Data;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-import static org.apache.poi.hssf.usermodel.HeaderFooter.file;
 import static ru.vasilyev.transfermanager.constants.DirectoryPaths.DIRECTORY_PATH;
 
 
@@ -34,19 +32,21 @@ public class FileParser {
             Sheet sheet = workbook.getSheetAt(0);
             List<FileInfo> fileData = new ArrayList<FileInfo>();
             DataFormatter dataFormatter = new DataFormatter();
+            DateTimeFormatter pattern = DateTimeFormatter.ofPattern("M/dd/yyyy");//добавил
             for (int n = 1; n < sheet.getPhysicalNumberOfRows(); n++) {
                 Row row = sheet.getRow(n);
                 FileInfo fileInfo = new FileInfo();
                 int i = row.getFirstCellNum();
-                fileInfo.setName(dataFormatter.formatCellValue(row.getCell(i)));
-                fileInfo.setSoname(dataFormatter.formatCellValue(row.getCell(++i)));
-                fileInfo.setPatronymic(dataFormatter.formatCellValue(row.getCell(++i)));
-                fileInfo.setGender(dataFormatter.formatCellValue(row.getCell(i)));
-                fileInfo.setBirthday((int) row.getCell(++i).getNumericCellValue());
+                fileInfo.setName(dataFormatter.formatCellValue(row.getCell(0)));
+                fileInfo.setSoname(dataFormatter.formatCellValue(row.getCell(1)));
+                fileInfo.setPatronymic(dataFormatter.formatCellValue(row.getCell(2)));
+                fileInfo.setGender(dataFormatter.formatCellValue(row.getCell(3)));
+                fileInfo.setBirthday(LocalDate.parse(row.getCell(4).getStringCellValue(),pattern));
                 fileData.add(fileInfo);
             }
+            //скачать файлы с разной генерацией даты. Попробовать в проекте.
             // Заполнен строками Фамилия Имя Отчество Гендер
-            return new ArrayList<>();
+            return fileData;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

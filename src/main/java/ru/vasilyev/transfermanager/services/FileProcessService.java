@@ -5,17 +5,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.vasilyev.transfermanager.component.FileParser;
 import ru.vasilyev.transfermanager.component.FileValidator;
-import ru.vasilyev.transfermanager.entities.FileInfo;
+import ru.vasilyev.transfermanager.dto.FileInfo;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-import static ru.vasilyev.transfermanager.constants.DirectoryPaths.DIRECTORY_PATH;
-import static ru.vasilyev.transfermanager.constants.DirectoryPaths.ERROR_PATH;
+import static ru.vasilyev.transfermanager.constants.DirectoryPaths.*;
 
 @Service
 @Slf4j
@@ -34,17 +32,17 @@ public class FileProcessService {
         // Валидация файла проверяет файл на соответствие структуре и расширению
         // расширение
         // структура
-        fileValidator.checkFileStructure(fileName);
-        fileValidator.checkFileExtension(fileName);
-        if(!fileValidator.checkFileStructure(fileName) || !fileValidator.checkFileExtension(fileName)){
+        if (!fileValidator.checkFileExtension(fileName) || !fileValidator.checkFileStructure(fileName)) {
             log.info("Файл не прошёл валидацию");
-            Path Directory = Paths.get(DIRECTORY_PATH+fileName);
-            Path destPath = Paths.get(ERROR_PATH + fileName);
-                Files.move(Directory, destPath);
+//            Path Directory = Paths.get(DIRECTORY_PATH + fileName);
+//            Path destPath = Paths.get(ERROR_PATH + fileName);
+//            Files.move(Directory, destPath);
             return;
         }
-
-
+        log.info("Файл прошел валидацию. Перемещаю в success");
+//        Path Directory = Paths.get(DIRECTORY_PATH + fileName);
+//        Path Success = Paths.get(SUCCESS_PATH + fileName);
+//        Files.move(Directory, Success);
 
 
         //Чтению файла. fileName

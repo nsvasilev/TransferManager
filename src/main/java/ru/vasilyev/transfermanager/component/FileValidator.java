@@ -34,12 +34,7 @@ public class FileValidator {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        if (cellsNum == 5) {
-            return true;
-
-        } else {
-            return false;
-        }
+        return cellsNum == 5;
 
 
 
@@ -53,8 +48,7 @@ public class FileValidator {
         log.info("Проверяем файл: " + fileName);
         String s = fileName.split("\\.")[1].toLowerCase();
         log.info("Расширение файла: " + s);
-        if (s.equals("xlsx")) return true;
-        else {return false;}
+        return s.equals("xlsx");
     }
 
 

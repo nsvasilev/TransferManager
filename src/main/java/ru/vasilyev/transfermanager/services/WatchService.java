@@ -1,6 +1,7 @@
 package ru.vasilyev.transfermanager.services;
 
 import jakarta.annotation.PostConstruct;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -17,6 +18,7 @@ import static ru.vasilyev.transfermanager.constants.DirectoryPaths.DIRECTORY_PAT
 @Service
 @Slf4j
 public class  WatchService {
+
 
     private final FileValidator fileValidator;
     private final FileProcessService fileProcessService;
