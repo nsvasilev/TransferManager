@@ -36,7 +36,7 @@ public class FileParser {
                 fileInfo.setPatronymic(dataFormatter.formatCellValue(row.getCell(2)));
                 fileInfo.setGender(dataFormatter.formatCellValue(row.getCell(3)));
                 fileInfo.setBirthDate(LocalDate.parse(row.getCell(4).getStringCellValue(),pattern));
-                fileInfo.setBalance(Double.parseDouble(dataFormatter.formatCellValue(row.getCell(5))));
+                fileInfo.setBalance(row.getCell(5).getNumericCellValue());
                 fileData.add(fileInfo);
             }
             //скачать файлы с разной генерацией даты. Попробовать в проекте.
