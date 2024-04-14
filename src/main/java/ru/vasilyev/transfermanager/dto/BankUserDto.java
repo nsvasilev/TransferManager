@@ -9,10 +9,10 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class FileInfo {
-    private String name;
-    private String surname;
+public class BankUserDto {
+    private String firstname;
+    private String lastname;
     private String patronymic;
     private String gender;
-    private LocalDate birthday;
+    private LocalDate birthDate;
 }

@@ -5,11 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.vasilyev.transfermanager.component.FileParser;
 import ru.vasilyev.transfermanager.component.FileValidator;
-import ru.vasilyev.transfermanager.dto.FileInfo;
+import ru.vasilyev.transfermanager.dto.BankUserDto;
+import ru.vasilyev.transfermanager.entity.BankUserEntity;
+import ru.vasilyev.transfermanager.repostitory.BankUserRepository;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -17,17 +18,16 @@ public class FileProcessService {
 
     private final FileParser fileParser;
     private final FileValidator fileValidator;
+    private final BankUserRepository bankUserRepository;
 
     @Autowired
-    public FileProcessService(FileParser fileParser, FileValidator fileValidator) {
+    public FileProcessService(FileParser fileParser, FileValidator fileValidator, BankUserRepository bankUserRepository) {
         this.fileParser = fileParser;
         this.fileValidator = fileValidator;
+        this.bankUserRepository = bankUserRepository;
     }
 
     public void processFile(String fileName) throws IOException {
-        // Валидация файла проверяет файл на соответствие структуре и расширению
-        // расширение
-        // структура
         if (!fileValidator.checkFileExtension(fileName) || !fileValidator.checkFileStructure(fileName)) {
             log.info("Файл не прошёл валидацию");
 //            Path Directory = Paths.get(DIRECTORY_PATH + fileName);
@@ -40,16 +40,14 @@ public class FileProcessService {
 //        Path Success = Paths.get(SUCCESS_PATH + fileName);
 //        Files.move(Directory, Success);
 
-
         //Чтению файла. fileName
-        List<FileInfo> list = fileParser.readFile(fileName);
+        List<BankUserDto> bankUsersDtoList = fileParser.readFile(fileName);
 
+        List<BankUserEntity> bankUsersEntityList = bankUsersDtoList.stream().map(user -> new BankUserEntity(user.getFirstname(), user.getLastname(), user.getPatronymic(), user.getGender(), user.getBirthDate())).toList();
 
-        log.info("Прочитал файл");
-        log.info(list.stream().map(value -> value.getName() + " " + value.getSurname()).collect(Collectors.joining("\n")));
-
-
-        // Закидывание файла в базу.
+        bankUsersEntityList.forEach(value -> {
+            bankUserRepository.save(value);
+        });
     }
 
 }
