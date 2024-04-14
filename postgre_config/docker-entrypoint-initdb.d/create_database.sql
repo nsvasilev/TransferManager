@@ -1,0 +1,1 @@
+CREATE DATABASE bank_users OWNER nikita;

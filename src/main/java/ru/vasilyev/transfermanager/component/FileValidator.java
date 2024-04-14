@@ -9,10 +9,8 @@ import org.springframework.stereotype.Component;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
-import static ru.vasilyev.transfermanager.constants.DirectoryPaths.DIRECTORY_PATH;
+import static ru.vasilyev.transfermanager.constants.DirectoryPaths.PROCESS_PATH;
 
 @Slf4j
 @Component
@@ -29,7 +27,7 @@ public class FileValidator {
     }
 
     public boolean checkFileStructure(String fileName) throws FileNotFoundException {
-        FileInputStream fis = new FileInputStream(DIRECTORY_PATH + fileName);
+        FileInputStream fis = new FileInputStream(PROCESS_PATH + fileName);
         int cellsNum;
         try (Workbook workbook = new XSSFWorkbook(fis)) {
             cellsNum = workbook.getSheetAt(0).getRow(0).getPhysicalNumberOfCells();

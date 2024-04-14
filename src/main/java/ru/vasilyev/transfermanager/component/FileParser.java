@@ -16,7 +16,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static ru.vasilyev.transfermanager.constants.DirectoryPaths.DIRECTORY_PATH;
+import static ru.vasilyev.transfermanager.constants.DirectoryPaths.PROCESS_PATH;
 
 
 /**
@@ -27,7 +27,7 @@ import static ru.vasilyev.transfermanager.constants.DirectoryPaths.DIRECTORY_PAT
 @Component
 public class FileParser {
     public List<FileInfo> readFile(String fileName) {
-        try (FileInputStream fis = new FileInputStream(DIRECTORY_PATH + fileName)) {
+        try (FileInputStream fis = new FileInputStream(PROCESS_PATH + fileName)) {
             Workbook workbook = new XSSFWorkbook(fis);
             Sheet sheet = workbook.getSheetAt(0);
             List<FileInfo> fileData = new ArrayList<FileInfo>();
@@ -41,7 +41,7 @@ public class FileParser {
                  */
                 int i = row.getFirstCellNum();
                 fileInfo.setName(dataFormatter.formatCellValue(row.getCell(0)));
-                fileInfo.setSoname(dataFormatter.formatCellValue(row.getCell(1)));
+                fileInfo.setSurname(dataFormatter.formatCellValue(row.getCell(1)));
                 fileInfo.setPatronymic(dataFormatter.formatCellValue(row.getCell(2)));
                 fileInfo.setGender(dataFormatter.formatCellValue(row.getCell(3)));
                 fileInfo.setBirthday(LocalDate.parse(row.getCell(4).getStringCellValue(),pattern));

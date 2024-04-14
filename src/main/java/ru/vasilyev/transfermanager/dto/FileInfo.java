@@ -1,29 +1,18 @@
 package ru.vasilyev.transfermanager.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class FileInfo {
     private String name;
-    private String soname;
+    private String surname;
     private String patronymic;
     private String gender;
     private LocalDate birthday;
-
-
-    public FileInfo(String name, String soname, String patronymic, String gender, LocalDate birthday) {
-        this.name = name;
-        this.soname = soname;
-        this.patronymic = patronymic;
-        this.gender = gender;
-        this.birthday = birthday;
-    }
-
-    public FileInfo() {
-
-    }
-
-
 }

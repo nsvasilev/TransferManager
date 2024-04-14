@@ -8,12 +8,8 @@ import ru.vasilyev.transfermanager.component.FileValidator;
 import ru.vasilyev.transfermanager.dto.FileInfo;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
-
-import static ru.vasilyev.transfermanager.constants.DirectoryPaths.*;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -50,7 +46,7 @@ public class FileProcessService {
 
 
         log.info("Прочитал файл");
-        //log.info(String.join("\n", (Iterable<? extends CharSequence>) list));
+        log.info(list.stream().map(value -> value.getName() + " " + value.getSurname()).collect(Collectors.joining("\n")));
 
 
         // Закидывание файла в базу.
