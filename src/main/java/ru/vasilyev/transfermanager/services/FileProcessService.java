@@ -43,7 +43,16 @@ public class FileProcessService {
         //Чтению файла. fileName
         List<BankUserDto> bankUsersDtoList = fileParser.readFile(fileName);
 
-        List<BankUserEntity> bankUsersEntityList = bankUsersDtoList.stream().map(user -> new BankUserEntity(user.getFirstname(), user.getLastname(), user.getPatronymic(), user.getGender(), user.getBirthDate())).toList();
+        List<BankUserEntity> bankUsersEntityList = bankUsersDtoList
+                .stream()
+                .map(user -> new BankUserEntity(
+                        user.getFirstname(),
+                        user.getLastname(),
+                        user.getPatronymic(),
+                        user.getGender(),
+                        user.getBirthDate()
+
+                )).toList();
 
         bankUsersEntityList.forEach(value -> {
             bankUserRepository.save(value);
