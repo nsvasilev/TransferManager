@@ -23,13 +23,15 @@ public class BankUserEntity {
     private String gender;
     @Column(name = "birth_date")
     private LocalDate birthDate;
+    private double balance;
 
-    public BankUserEntity(String firstname, String lastname, String patronymic, String gender, LocalDate birthDate) {
+    public BankUserEntity(String firstname, String lastname, String patronymic, String gender, LocalDate birthDate, double balance) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.patronymic = patronymic;
         this.gender = gender;
         this.birthDate = birthDate;
+        this.balance=balance;
     }
 }
 

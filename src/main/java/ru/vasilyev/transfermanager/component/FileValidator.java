@@ -34,7 +34,7 @@ public class FileValidator {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return cellsNum == 5;
+        return cellsNum == 6;
     }
 
     public boolean checkFileExtension(String fileName){

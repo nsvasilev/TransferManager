@@ -15,4 +15,5 @@ public class BankUserDto {
     private String patronymic;
     private String gender;
     private LocalDate birthDate;
+    private double balance;
 }

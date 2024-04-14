@@ -1,10 +1,7 @@
 package ru.vasilyev.transfermanager.component;
 
 
-import org.apache.poi.ss.usermodel.DataFormatter;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Component;
 import ru.vasilyev.transfermanager.dto.BankUserDto;
@@ -18,12 +15,6 @@ import java.util.List;
 
 import static ru.vasilyev.transfermanager.constants.DirectoryPaths.PROCESS_PATH;
 
-
-/**
- * Собрали ExcelParser для чтения excel файла. После чтения, данные идут в эррейлист.
- * Вопрос: для чего они идут в эррей лист?
- **/
-
 @Component
 public class FileParser {
     public List<BankUserDto> readFile(String fileName) {
@@ -32,7 +23,7 @@ public class FileParser {
             Sheet sheet = workbook.getSheetAt(0);
             List<BankUserDto> fileData = new ArrayList<BankUserDto>();
             DataFormatter dataFormatter = new DataFormatter();
-            DateTimeFormatter pattern = DateTimeFormatter.ofPattern("M/dd/yyyy");//добавил
+            DateTimeFormatter pattern = DateTimeFormatter.ofPattern("MM/dd/yyyy");//добавил
             for (int n = 1; n < sheet.getPhysicalNumberOfRows(); n++) {
                 Row row = sheet.getRow(n);
                 BankUserDto fileInfo = new BankUserDto();
@@ -45,11 +36,13 @@ public class FileParser {
                 fileInfo.setPatronymic(dataFormatter.formatCellValue(row.getCell(2)));
                 fileInfo.setGender(dataFormatter.formatCellValue(row.getCell(3)));
                 fileInfo.setBirthDate(LocalDate.parse(row.getCell(4).getStringCellValue(),pattern));
+                fileInfo.setBalance(Double.parseDouble(dataFormatter.formatCellValue(row.getCell(5))));
                 fileData.add(fileInfo);
             }
             //скачать файлы с разной генерацией даты. Попробовать в проекте.
             // Заполнен строками Фамилия Имя Отчество Гендер
             return fileData;
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

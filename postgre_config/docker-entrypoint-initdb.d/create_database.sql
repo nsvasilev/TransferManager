@@ -8,5 +8,6 @@ CREATE TABLE bank_user(
     firstname varchar(64) not null,
     patronymic varchar(64),
     gender varchar(6) not null,
-    birth_date date not null
+    birth_date date not null,
+    balance decimal(10,2) not null
 );
