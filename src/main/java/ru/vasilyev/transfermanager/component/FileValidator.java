@@ -3,11 +3,9 @@ package ru.vasilyev.transfermanager.component;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import static ru.vasilyev.transfermanager.constants.DirectoryPaths.PROCESS_PATH;
@@ -16,28 +14,18 @@ import static ru.vasilyev.transfermanager.constants.DirectoryPaths.PROCESS_PATH;
 @Component
 public class FileValidator {
 
-    /**
-     * Не используется - выпилить
-     */
-    private final FileParser fileParser;
-
-    @Autowired
-    public FileValidator(FileParser fileParser) {
-        this.fileParser = fileParser;
-    }
-
-    public boolean checkFileStructure(String fileName) throws FileNotFoundException {
-        FileInputStream fis = new FileInputStream(PROCESS_PATH + fileName);
+    public boolean checkFileStructure(String fileName) {
         int cellsNum;
-        try (Workbook workbook = new XSSFWorkbook(fis)) {
+        try (FileInputStream fis = new FileInputStream(PROCESS_PATH + fileName);
+             Workbook workbook = new XSSFWorkbook(fis)) {
             cellsNum = workbook.getSheetAt(0).getRow(0).getPhysicalNumberOfCells();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (IOException ex) {
+            throw new RuntimeException();
         }
         return cellsNum == 6;
     }
 
-    public boolean checkFileExtension(String fileName){
+    public boolean checkFileExtension(String fileName) {
         //Path Directory = Paths.get(DIRECTORY_PATH + fileName);
         log.info("Проверяем файл: " + fileName);
         String s = fileName.split("\\.")[1].toLowerCase();

@@ -9,7 +9,6 @@ import ru.vasilyev.transfermanager.dto.BankUserDto;
 import ru.vasilyev.transfermanager.entity.BankUserEntity;
 import ru.vasilyev.transfermanager.repostitory.BankUserRepository;
 
-import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -27,7 +26,7 @@ public class FileProcessService {
         this.bankUserRepository = bankUserRepository;
     }
 
-    public void processFile(String fileName) throws IOException {
+    public void processFile(String fileName) {
         if (!fileValidator.checkFileExtension(fileName) || !fileValidator.checkFileStructure(fileName)) {
             log.info("Файл не прошёл валидацию");
 //            Path Directory = Paths.get(DIRECTORY_PATH + fileName);
@@ -45,9 +44,7 @@ public class FileProcessService {
 
         List<BankUserEntity> bankUsersEntityList = bankUsersDtoList.stream().map(user -> new BankUserEntity(user.getFirstname(), user.getLastname(), user.getPatronymic(), user.getGender(), user.getBirthDate(),user.getBalance())).toList();
 
-        bankUsersEntityList.forEach(value -> {
-            bankUserRepository.save(value);
-        });
+        bankUserRepository.saveAll(bankUsersEntityList);
     }
 
 }
