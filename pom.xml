@@ -67,7 +67,16 @@
             <artifactId>fastexcel</artifactId>
             <version>0.17.0</version>
         </dependency>
-
+        <!-- Ниже зависимость для FileWatch -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+            <version>3.0.2</version>
+        </dependency>
     </dependencies>
 
     <build>
