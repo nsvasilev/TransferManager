@@ -27,15 +27,12 @@ public class FileParser {
             for (int n = 1; n < sheet.getPhysicalNumberOfRows(); n++) {
                 Row row = sheet.getRow(n);
                 BankUserDto fileInfo = new BankUserDto();
-                /**
-                 * Не используется - выпилить
-                 */
                 int i = row.getFirstCellNum();
                 fileInfo.setFirstname(dataFormatter.formatCellValue(row.getCell(0)));
                 fileInfo.setLastname(dataFormatter.formatCellValue(row.getCell(1)));
                 fileInfo.setPatronymic(dataFormatter.formatCellValue(row.getCell(2)));
                 fileInfo.setGender(dataFormatter.formatCellValue(row.getCell(3)));
-                fileInfo.setBirthDate(LocalDate.parse(row.getCell(4).getStringCellValue(),pattern));
+                fileInfo.setBirthDate(LocalDate.parse(row.getCell(4).toString()));
                 fileInfo.setBalance(row.getCell(5).getNumericCellValue());
                 fileData.add(fileInfo);
             }

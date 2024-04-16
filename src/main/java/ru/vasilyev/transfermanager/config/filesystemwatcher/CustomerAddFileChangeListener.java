@@ -1,5 +1,6 @@
 package ru.vasilyev.transfermanager.config.filesystemwatcher;
 
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.devtools.filewatch.ChangedFile;
 import org.springframework.boot.devtools.filewatch.ChangedFiles;
@@ -18,6 +19,7 @@ public class CustomerAddFileChangeListener implements FileChangeListener {
         this.fileProcessService = fileProcessService;
     }
 
+    @SneakyThrows //че за хуйня? ты кто?
     @Override
     public void onChange(Set<ChangedFiles> changeSet) {
         for (ChangedFiles files : changeSet)
