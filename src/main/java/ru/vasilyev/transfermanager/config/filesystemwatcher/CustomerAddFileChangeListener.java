@@ -26,9 +26,7 @@ public class CustomerAddFileChangeListener implements FileChangeListener {
                     try {
                         fileProcessService.processFile(file.getFile().getName());
                     } catch (IOException e) {
-                        /**
-                         * ОБРАБОТАЙ ОШИБКУ. ТО ЕСТЬ ВЫВЕДИ В  ЛОГ ЧТО ВЫПАЛА ОШИБКА. ПРОВЕРЮ TODO:
-                         */
+                        log.info("поймали ошибку!");
                     }
                 }
     }

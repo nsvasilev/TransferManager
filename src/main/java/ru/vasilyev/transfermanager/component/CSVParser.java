@@ -3,54 +3,53 @@ package ru.vasilyev.transfermanager.component;
 import com.opencsv.bean.ColumnPositionMappingStrategy;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.vasilyev.transfermanager.dto.BankUserDto;
 import ru.vasilyev.transfermanager.interfaces.FileParser;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
+
 import static ru.vasilyev.transfermanager.constants.DirectoryPaths.PROCESS_PATH;
 
 @Component
+@Slf4j
 public class CSVParser implements FileParser {
     public List<BankUserDto> readFile(String fileName) {
 
-       //  fileName = PROCESS_PATH + fileName;
-        {
-            try (var bufferedReader = Files.newBufferedReader(Path.of(PROCESS_PATH + fileName), StandardCharsets.UTF_8)){
+        List<BankUserDto> fileData = null;
+        try (var bufferedReader = Files.newBufferedReader(Path.of(PROCESS_PATH + fileName), StandardCharsets.UTF_8)) {
 
-                ColumnPositionMappingStrategy<BankUserDto> strategy = new ColumnPositionMappingStrategy<>();
-                strategy.setType(BankUserDto.class);
-                String[] fields = {"firstname", "lastname", "patronymic","gender", "birtDate","balance"};
-                strategy.setColumnMapping(fields);
+            ColumnPositionMappingStrategy<BankUserDto> strategy = new ColumnPositionMappingStrategy<>();
+            strategy.setType(BankUserDto.class);
+            String[] fields = {"firstname", "lastname", "patronymic", "gender", "birthday", "balance"};
+            strategy.setColumnMapping(fields);
 
-                CsvToBean<BankUserDto> csvToBean = new CsvToBeanBuilder<BankUserDto>(bufferedReader)
-                        .withMappingStrategy(strategy)
-                        .withType(BankUserDto.class)
-                        .withThrowExceptions(false)
-                        .build();
+            CsvToBean<BankUserDto> csvToBean = new CsvToBeanBuilder<BankUserDto>(bufferedReader)
+                    .withMappingStrategy(strategy)
+                    .withType(BankUserDto.class)
+                    .withThrowExceptions(false)
+                    .build();
 
-                List<BankUserDto> fileData = csvToBean.parse();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+             fileData = csvToBean.parse();
+        } catch (Exception e) {
+            log.info("ОШИБКАААА БЛЯТЬ");
+            e.printStackTrace();
         }
-        return null;
+
+        return fileData;
     }
 }
 
 
-
-
-
-
-
-
-        /**
-        * Снизу отдельный поток для чтения файла.
-         **/
+/**
+ * Снизу отдельный поток для чтения файла.
+ **/
 //        public static void main(String[] args) throws IOException {
 //
 //// Java code to illustrate reading a

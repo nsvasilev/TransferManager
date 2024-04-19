@@ -71,9 +71,9 @@ public class FileProcessService {
         if (fileName.endsWith(".csv")) {
             if (csvValidator.checkExtension(fileName) && csvValidator.checkStructure(fileName)) {
                 log.info(" Файл csv прошел валидацию. Перемещаю в success");
-//                List<BankUserDto> bankUsersDtoList = csvParser.readFile(fileName);
-//                List<BankUserEntity> bankUsersEntityList = bankUsersDtoList.stream().map(user -> new BankUserEntity(user.getFirstname(), user.getLastname(), user.getPatronymic(), user.getGender(), user.getBirthDate(), user.getBalance())).toList();
-//                bankUserRepository.saveAll(bankUsersEntityList);
+                List<BankUserDto> bankUsersDtoList = csvParser.readFile(fileName);
+                List<BankUserEntity> bankUsersEntityList = bankUsersDtoList.stream().map(user -> new BankUserEntity(user.getFirstname(), user.getLastname(), user.getPatronymic(), user.getGender(), user.getBirthDate(), user.getBalance())).toList();
+                bankUserRepository.saveAll(bankUsersEntityList);
                 Path process = Paths.get(fileSystemWatcherProperties.Process() + fileName);
                 Path success = Paths.get(fileSystemWatcherProperties.Success() + fileName);
                 Files.move(process, success);

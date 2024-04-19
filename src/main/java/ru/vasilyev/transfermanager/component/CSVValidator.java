@@ -25,8 +25,8 @@ public class CSVValidator implements FileValidator {
      *
      */
     @Override
-    public boolean checkStructure(String fileName) {
-        CSVReader csvReader;
+    public boolean checkStructure(String fileName) throws IOException {
+        CSVReader csvReader = null;
         String[] values;
         try {
             csvReader = new CSVReader(new FileReader(PROCESS_PATH + fileName));
@@ -34,6 +34,9 @@ public class CSVValidator implements FileValidator {
         } catch (IOException e) {
             log.info("Не удалось проверить структуру файла, по причине: " + e.getMessage());
             throw new RuntimeException(e);
+        }
+        finally {
+            csvReader.close();
         }
         return values.length == 6;
     }
