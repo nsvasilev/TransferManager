@@ -16,7 +16,7 @@ import java.util.List;
 import static ru.vasilyev.transfermanager.constants.DirectoryPaths.PROCESS_PATH;
 
 @Component
-public class FileParser {
+public class ExcelParser {
     public List<BankUserDto> readFile(String fileName) {
         try (FileInputStream fis = new FileInputStream(PROCESS_PATH + fileName)) {
             Workbook workbook = new XSSFWorkbook(fis);
@@ -32,12 +32,12 @@ public class FileParser {
                 fileInfo.setLastname(dataFormatter.formatCellValue(row.getCell(1)));
                 fileInfo.setPatronymic(dataFormatter.formatCellValue(row.getCell(2)));
                 fileInfo.setGender(dataFormatter.formatCellValue(row.getCell(3)));
-                fileInfo.setBirthDate(LocalDate.parse(row.getCell(4).toString()));
+                //fileInfo.setBirthDate(LocalDate.parse(dataFormatter.formatCellValue(row.getCell(4))));
+                fileInfo.setBirthDate(LocalDate.parse(row.getCell(4).getStringCellValue(),pattern));
                 fileInfo.setBalance(row.getCell(5).getNumericCellValue());
                 fileData.add(fileInfo);
             }
-            //скачать файлы с разной генерацией даты. Попробовать в проекте.
-            // Заполнен строками Фамилия Имя Отчество Гендер
+            //читает дату только определенного образца
             return fileData;
 
         } catch (IOException e) {

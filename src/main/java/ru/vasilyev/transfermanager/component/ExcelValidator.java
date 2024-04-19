@@ -12,9 +12,10 @@ import static ru.vasilyev.transfermanager.constants.DirectoryPaths.PROCESS_PATH;
 
 @Slf4j
 @Component
-public class FileValidator {
+public class ExcelValidator {
+    //нет валидации csv файла
 
-    public boolean checkFileStructure(String fileName) {
+    public boolean CheckStructure(String fileName) {
         int cellsNum;
         try (FileInputStream fis = new FileInputStream(PROCESS_PATH + fileName);
              Workbook workbook = new XSSFWorkbook(fis)) {
@@ -25,12 +26,12 @@ public class FileValidator {
         return cellsNum == 6;
     }
 
-    public boolean checkFileExtension(String fileName) {
+    public boolean CheckExtension(String fileName) {
         //Path Directory = Paths.get(DIRECTORY_PATH + fileName);
         log.info("Проверяем файл: " + fileName);
         String s = fileName.split("\\.")[1].toLowerCase();
         log.info("Расширение файла: " + s);
-        return s.equals("xlsx");
+        return (s.equals("xlsx") || s.equals("csv"));
     }
 
 
