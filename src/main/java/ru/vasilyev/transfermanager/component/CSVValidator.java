@@ -34,7 +34,7 @@ public class CSVValidator implements FileValidator {
     @Override
     public boolean checkExtension(String fileName) {
         log.info("Проверяем файл: " + fileName);
-        log.info("Расширение файла:csv.");
+        log.info("Расширение файла:csv");
         return fileName.endsWith(".csv");
     }
 }
