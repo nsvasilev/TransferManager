@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import ru.vasilyev.transfermanager.property.FileSystemWatcherProperties;
 import ru.vasilyev.transfermanager.services.FileProcessService;
+
 import java.io.File;
 
 @Configuration
@@ -19,6 +20,13 @@ public class FileSystemWatcherConfig {
     private final FileProcessService fileProcessService;
     private final FileSystemWatcherProperties fileSystemWatcherProperties;
 
+
+    /**
+     * ЗАЧЕМ ЛИШНИЕ СТРОКИ, Я ПРО 32 строку
+     * @param fileProcessService
+     * @param fileSystemWatcherProperties
+     * TODO:
+     */
     @Autowired
     public FileSystemWatcherConfig(FileProcessService fileProcessService, FileSystemWatcherProperties fileSystemWatcherProperties) {
         this.fileProcessService = fileProcessService;
@@ -30,9 +38,11 @@ public class FileSystemWatcherConfig {
     public FileSystemWatcher fileSystemWatcher() {
         File file1 = new File(fileSystemWatcherProperties.Process());
         log.info(file1.getAbsolutePath());
-        FileSystemWatcher fileSystemWatcher = new FileSystemWatcher(fileSystemWatcherProperties.daemon(),
+        FileSystemWatcher fileSystemWatcher = new FileSystemWatcher(
+                fileSystemWatcherProperties.daemon(),
                 fileSystemWatcherProperties.pollInterval(),
-                fileSystemWatcherProperties.quietPeriod());
+                fileSystemWatcherProperties.quietPeriod()
+        );
         fileSystemWatcher.addSourceDirectory(new File(fileSystemWatcherProperties.Process()));
         fileSystemWatcher.addListener(new CustomerAddFileChangeListener(fileProcessService));
         fileSystemWatcher.start();
@@ -41,7 +51,7 @@ public class FileSystemWatcherConfig {
     }
 
     @PreDestroy
-    public void onDestroy(){
+    public void onDestroy() {
         log.info("Shutting Down File System Watcher.");
         fileSystemWatcher().stop();
     }

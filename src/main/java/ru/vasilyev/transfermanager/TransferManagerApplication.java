@@ -5,6 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 
+/**
+ * TODO: НЕ ХВАТАЕТ ЛОГОВ В ПРОЕКТЕ.
+ */
 @EnableAsync
 @SpringBootApplication
 public class TransferManagerApplication {

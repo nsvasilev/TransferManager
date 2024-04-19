@@ -2,21 +2,19 @@ package ru.vasilyev.transfermanager.component;
 
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
-import com.univocity.parsers.csv.CsvParser;
-import com.univocity.parsers.csv.CsvParserSettings;
 import org.springframework.stereotype.Component;
-import ru.vasilyev.transfermanager.config.filesystemwatcher.FileSystemWatcherConfig;
 import ru.vasilyev.transfermanager.dto.BankUserDto;
+import ru.vasilyev.transfermanager.interfaces.FileParser;
 
-import java.io.*;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static ru.vasilyev.transfermanager.constants.DirectoryPaths.PROCESS_PATH;
 
 @Component
-public class CSVParser {
+public class CSVParser implements FileParser {
     public List<BankUserDto> readFile(String fileName) throws IOException {
 
          fileName = PROCESS_PATH + fileName;

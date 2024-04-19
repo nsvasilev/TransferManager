@@ -4,18 +4,43 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Component;
+import ru.vasilyev.transfermanager.interfaces.FileValidator;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 
 import static ru.vasilyev.transfermanager.constants.DirectoryPaths.PROCESS_PATH;
 
+/**
+ * КОММЕНТАРИИИИ НАДА АСТАВЛЯТЬ!
+ *//**
+ * КОММЕНТАРИИИИ НАДА АСТАВЛЯТЬ!
+ *//**
+ * КОММЕНТАРИИИИ НАДА АСТАВЛЯТЬ!
+ *//**
+ * КОММЕНТАРИИИИ НАДА АСТАВЛЯТЬ!
+ *//**
+ * КОММЕНТАРИИИИ НАДА АСТАВЛЯТЬ!
+ *//**
+ * КОММЕНТАРИИИИ НАДА АСТАВЛЯТЬ!
+ *//**
+ * КОММЕНТАРИИИИ НАДА АСТАВЛЯТЬ!
+ *//**
+ * КОММЕНТАРИИИИ НАДА АСТАВЛЯТЬ!
+ *//**
+ * КОММЕНТАРИИИИ НАДА АСТАВЛЯТЬ!
+ *//**
+ * КОММЕНТАРИИИИ НАДА АСТАВЛЯТЬ!
+ *//**
+ * КОММЕНТАРИИИИ НАДА АСТАВЛЯТЬ!
+ */
 @Slf4j
 @Component
-public class ExcelValidator {
+public class ExcelValidator implements FileValidator {
     //нет валидации csv файла
 
-    public boolean CheckStructure(String fileName) {
+    @Override
+    public boolean checkStructure(String fileName) {
         int cellsNum;
         try (FileInputStream fis = new FileInputStream(PROCESS_PATH + fileName);
              Workbook workbook = new XSSFWorkbook(fis)) {
@@ -26,9 +51,14 @@ public class ExcelValidator {
         return cellsNum == 6;
     }
 
-    public boolean CheckExtension(String fileName) {
+    @Override
+    public boolean checkExtension(String fileName) {
         //Path Directory = Paths.get(DIRECTORY_PATH + fileName);
         log.info("Проверяем файл: " + fileName);
+        /**
+         * ПЕРЕДЕЛАЙ ПО ЧЕЛОВЕЧЕСКИ
+         * TODO:
+         */
         String s = fileName.split("\\.")[1].toLowerCase();
         log.info("Расширение файла: " + s);
         return (s.equals("xlsx") || s.equals("csv"));

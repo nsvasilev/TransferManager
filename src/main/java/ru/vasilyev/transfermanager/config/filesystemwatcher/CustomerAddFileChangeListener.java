@@ -1,17 +1,16 @@
 package ru.vasilyev.transfermanager.config.filesystemwatcher;
 
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.devtools.filewatch.ChangedFile;
 import org.springframework.boot.devtools.filewatch.ChangedFiles;
 import org.springframework.boot.devtools.filewatch.FileChangeListener;
 import ru.vasilyev.transfermanager.services.FileProcessService;
 
+import java.io.IOException;
 import java.util.Set;
 
 @Slf4j
 public class CustomerAddFileChangeListener implements FileChangeListener {
-
 
     private final FileProcessService fileProcessService;
 
@@ -19,12 +18,18 @@ public class CustomerAddFileChangeListener implements FileChangeListener {
         this.fileProcessService = fileProcessService;
     }
 
-    @SneakyThrows //че за хуйня? ты кто?
     @Override
     public void onChange(Set<ChangedFiles> changeSet) {
         for (ChangedFiles files : changeSet)
             for (ChangedFile file : files.getFiles())
-                if (file.getType().equals(ChangedFile.Type.ADD))
-                    fileProcessService.processFile(file.getFile().getName());
+                if (file.getType().equals(ChangedFile.Type.ADD)) {
+                    try {
+                        fileProcessService.processFile(file.getFile().getName());
+                    } catch (IOException e) {
+                        /**
+                         * ОБРАБОТАЙ ОШИБКУ. ТО ЕСТЬ ВЫВЕДИ В  ЛОГ ЧТО ВЫПАЛА ОШИБКА. ПРОВЕРЮ TODO:
+                         */
+                    }
+                }
     }
 }

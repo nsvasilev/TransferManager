@@ -39,7 +39,7 @@ public class FileProcessService {
     }
 
     public void processFile(String fileName) throws IOException {
-        if (!excelValidator.CheckExtension(fileName) || !excelValidator.CheckStructure(fileName)) {
+        if (!excelValidator.checkExtension(fileName) || !excelValidator.checkStructure(fileName)) {
             log.info("Файл не прошёл валидацию");
             Path Directory = Paths.get(fileSystemWatcherProperties.Process() + fileName);
             Path destPath = Paths.get(fileSystemWatcherProperties.Error() + fileName);
