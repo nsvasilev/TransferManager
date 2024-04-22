@@ -16,6 +16,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
+/**
+ * TODO: Код выглядит очень громоздко и некрасиво.
+ *  Исправлять можно по разному. Можно выносить общие логически блоки в отдельные методы, например перемещение файла
+ *  Или применять паттерны проектирования. До них дойдём чуть позже.
+ *  Более того, у тебя тут есть даже лишний код
+ */
 @Service
 @Slf4j
 @EnableConfigurationProperties(FileSystemWatcherProperties.class)
@@ -51,6 +57,7 @@ public class FileProcessService {
         }
         if (fileName.endsWith(".xlsx")) {
             if (excelValidator.checkExtension(fileName) && excelValidator.checkStructure(fileName)) {
+                //TODO: указать имя файла, лог события должен быть после события(кроме выбрасывания исключений ). Ты перемещаешь файл только через 5 строк кода
                 log.info("Файл xlsx прошел валидацию. Перемещаю в success");
                 List<BankUserDto> bankUsersDtoList = excelParser.readFile(fileName);
                 List<BankUserEntity> bankUsersEntityList = bankUsersDtoList.stream().map(user -> new BankUserEntity(user.getFirstname(), user.getLastname(), user.getPatronymic(), user.getGender(), user.getBirthDate(), user.getBalance())).toList();
@@ -69,7 +76,8 @@ public class FileProcessService {
         }
         if (fileName.endsWith(".csv")) {
             if (csvValidator.checkExtension(fileName) && csvValidator.checkStructure(fileName)) {
-                log.info(" Файл csv прошел валидацию. Перемещаю в success");
+                //TODO: указать имя файла, лог события должен быть после события. Ты перемещаешь файл только через 5 строк кода
+                log.info("Файл csv прошел валидацию. Перемещаю в success");
                 List<BankUserDto> bankUsersDtoList = csvParser.readFile(fileName);
                 List<BankUserEntity> bankUsersEntityList = bankUsersDtoList.stream().map(user -> new BankUserEntity(user.getFirstname(), user.getLastname(), user.getPatronymic(), user.getGender(), user.getBirthDate(), user.getBalance())).toList();
                 bankUserRepository.saveAll(bankUsersEntityList);
@@ -77,13 +85,12 @@ public class FileProcessService {
                 Path success = Paths.get(fileSystemWatcherProperties.successPathDirectory() + fileName);
                 Files.move(process, success);
             } else {
-                log.info(" Файл" + fileName + " не прошёл вторичную валидацию. Неправильная структура");
+                log.info("Файл " + fileName + " не прошёл вторичную валидацию. Неправильная структура");
                 Path process = Paths.get(fileSystemWatcherProperties.processPathDirectory() + fileName);
                 Path error = Paths.get(fileSystemWatcherProperties.errorPathDirectory() + fileName);
                 Files.move(process, error);
                 errorHandler.clearError(fileName);
-                log.info(" Файл" + fileName + "был направлен в папку Error");
-
+                log.info("Файл " + fileName + " был направлен в папку Error");
             }
         }
     }
