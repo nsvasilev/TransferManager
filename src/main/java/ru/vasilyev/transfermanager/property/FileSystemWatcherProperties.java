@@ -6,23 +6,19 @@ import java.time.Duration;
 
 
 /**
- * ПОЛЯ С МАЛЕНЬКОЙ БУКВЫ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
- * СЛОВО ПРОЦЕСС СКАКСЕС И ЕРОР НЕ ПРЕДОСТАВЛЧЮТ НАМ ИНФОРМАЦИЮ, ЧТО ХНАРИТСЯ В ПОЛЕ.
- * НУЖНО ПЕРЕИМЕНОВАТЬ В successPathDirectory
- *
- * @param daemon TODO: описать параметры
- * @param pollInterval
- * @param quietPeriod
- * @param Success
- * @param Process
- * @param Error
+ * @param daemon - поток демона используется для отслеживания изменений
+ * @param pollInterval - время ожидания между проверкой изменений
+ * @param quietPeriod - количество времени, необходимое после обнаружения изменения, чтобы убедиться, что обновления завершены.
+ * @param successPathDirectory - директория хранения файлов, прошедших валидацию
+ * @param processPathDirectory - начальная директория для файлов
+ * @param errorPathDirectory - директория для файлов, не прошедших валидацию
  */
 @ConfigurationProperties(prefix = "application.file.watch")
 public record FileSystemWatcherProperties(
         boolean daemon,
         Duration pollInterval,
         Duration quietPeriod,
-        String Success,
-        String Process,
-        String Error) {
+        String successPathDirectory,
+        String processPathDirectory,
+        String errorPathDirectory) {
 }

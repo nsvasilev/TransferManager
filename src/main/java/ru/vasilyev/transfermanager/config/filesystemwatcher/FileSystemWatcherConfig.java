@@ -16,37 +16,27 @@ import java.io.File;
 @Slf4j
 @EnableConfigurationProperties(FileSystemWatcherProperties.class)
 public class FileSystemWatcherConfig {
-
     private final FileProcessService fileProcessService;
     private final FileSystemWatcherProperties fileSystemWatcherProperties;
-
-
-    /**
-     * ЗАЧЕМ ЛИШНИЕ СТРОКИ, Я ПРО 32 строку
-     * @param fileProcessService
-     * @param fileSystemWatcherProperties
-     * TODO:
-     */
     @Autowired
     public FileSystemWatcherConfig(FileProcessService fileProcessService, FileSystemWatcherProperties fileSystemWatcherProperties) {
         this.fileProcessService = fileProcessService;
-
         this.fileSystemWatcherProperties = fileSystemWatcherProperties;
     }
 
     @Bean
     public FileSystemWatcher fileSystemWatcher() {
-        File file1 = new File(fileSystemWatcherProperties.Process());
+        File file1 = new File(fileSystemWatcherProperties.processPathDirectory());
         log.info(file1.getAbsolutePath());
         FileSystemWatcher fileSystemWatcher = new FileSystemWatcher(
                 fileSystemWatcherProperties.daemon(),
                 fileSystemWatcherProperties.pollInterval(),
                 fileSystemWatcherProperties.quietPeriod()
         );
-        fileSystemWatcher.addSourceDirectory(new File(fileSystemWatcherProperties.Process()));
+        fileSystemWatcher.addSourceDirectory(new File(fileSystemWatcherProperties.processPathDirectory()));
         fileSystemWatcher.addListener(new CustomerAddFileChangeListener(fileProcessService));
         fileSystemWatcher.start();
-        log.info("FileSystemWatcher инициализирован и готов к работы");
+        log.info("FileSystemWatcher conceived and ready to go");
         return fileSystemWatcher;
     }
 

@@ -1,16 +1,13 @@
 package ru.vasilyev.transfermanager.dto;
 
 import com.opencsv.bean.CsvBindByPosition;
+import com.opencsv.bean.CsvCustomBindByPosition;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.vasilyev.transfermanager.utils.LocalDateCSVConverter;
 
 import java.time.LocalDate;
-
-/**
- * МОЖНО ЛИ СДЕЛАТЬ РЕКОРДОМ?
- * TODO: выяснить разницу между классом и рекордом
- */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,6 +21,7 @@ public class BankUserDto {
     @CsvBindByPosition(position = 3)
     private String gender;
     @CsvBindByPosition(position = 4)
+    @CsvCustomBindByPosition(position = 4,converter = LocalDateCSVConverter.class)
     private LocalDate birthDate;
     @CsvBindByPosition(position = 5)
     private double balance;

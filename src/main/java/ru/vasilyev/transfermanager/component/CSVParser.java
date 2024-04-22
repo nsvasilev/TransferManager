@@ -7,23 +7,25 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.vasilyev.transfermanager.dto.BankUserDto;
 import ru.vasilyev.transfermanager.interfaces.FileParser;
+import ru.vasilyev.transfermanager.property.FileSystemWatcherProperties;
 
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
-
-import static ru.vasilyev.transfermanager.constants.DirectoryPaths.PROCESS_PATH;
-
 @Component
 @Slf4j
 public class CSVParser implements FileParser {
+    private final FileSystemWatcherProperties fileSystemWatcherProperties;
+
+    public CSVParser(FileSystemWatcherProperties fileSystemWatcherProperties) {
+        this.fileSystemWatcherProperties = fileSystemWatcherProperties;
+    }
+    @Override
     public List<BankUserDto> readFile(String fileName) {
 
         List<BankUserDto> fileData = null;
-        try (var bufferedReader = Files.newBufferedReader(Path.of(PROCESS_PATH + fileName), StandardCharsets.UTF_8)) {
+        try (var bufferedReader = Files.newBufferedReader(Path.of(fileSystemWatcherProperties.processPathDirectory()+fileName), StandardCharsets.UTF_8)) {
 
             ColumnPositionMappingStrategy<BankUserDto> strategy = new ColumnPositionMappingStrategy<>();
             strategy.setType(BankUserDto.class);
@@ -33,43 +35,17 @@ public class CSVParser implements FileParser {
             CsvToBean<BankUserDto> csvToBean = new CsvToBeanBuilder<BankUserDto>(bufferedReader)
                     .withMappingStrategy(strategy)
                     .withType(BankUserDto.class)
-                    .withThrowExceptions(false)
+                    .withThrowExceptions(true)
+                    .withSkipLines(1)
                     .build();
 
              fileData = csvToBean.parse();
         } catch (Exception e) {
-            log.info("ОШИБКАААА БЛЯТЬ");
+            log.info("ошибка в чтении csv файла " + e.getMessage());
             e.printStackTrace();
         }
 
         return fileData;
     }
+
 }
-
-
-/**
- * Снизу отдельный поток для чтения файла.
- **/
-//        public static void main(String[] args) throws IOException {
-//
-//// Java code to illustrate reading a
-//// all data at once
-//            String fileName = PROCESS_PATH + "convertcsv.csv";
-//            {
-//                try {
-//                    FileReader filereader = new FileReader(fileName);
-//                    CSVReader csvReader = new CSVReaderBuilder(filereader)
-//                            .withSkipLines(1)
-//                            .build();
-//                    List<String[]> allData = csvReader.readAll();
-//                    for (String[] row : allData) {
-//                        for (String cell : row) {
-//                            System.out.print(cell + "\t");
-//                        }
-//                        System.out.println();
-//                    }
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }

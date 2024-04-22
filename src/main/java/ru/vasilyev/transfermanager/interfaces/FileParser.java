@@ -1,8 +1,14 @@
 package ru.vasilyev.transfermanager.interfaces;
 
+import ru.vasilyev.transfermanager.dto.BankUserDto;
+
+import java.util.List;
+
 /**
- * TODO: ИМЛПЕМЕНТИРОВАТЬ, вынести методы
+ * Вынесли метод
  *
  */
 public interface FileParser {
+
+    List<BankUserDto> readFile(String fileName);
 }

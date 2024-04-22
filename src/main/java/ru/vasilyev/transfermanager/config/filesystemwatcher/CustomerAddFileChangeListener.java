@@ -11,9 +11,7 @@ import java.util.Set;
 
 @Slf4j
 public class CustomerAddFileChangeListener implements FileChangeListener {
-
     private final FileProcessService fileProcessService;
-
     public CustomerAddFileChangeListener(FileProcessService fileProcessService) {
         this.fileProcessService = fileProcessService;
     }
@@ -26,7 +24,7 @@ public class CustomerAddFileChangeListener implements FileChangeListener {
                     try {
                         fileProcessService.processFile(file.getFile().getName());
                     } catch (IOException e) {
-                        log.info("поймали ошибку!");
+                        log.info("ошибка при обработке файла" + e.getMessage());
                     }
                 }
     }
