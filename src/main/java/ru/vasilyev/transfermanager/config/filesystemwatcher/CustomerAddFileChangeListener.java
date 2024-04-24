@@ -23,6 +23,11 @@ public class CustomerAddFileChangeListener implements FileChangeListener {
             for (ChangedFile file : files.getFiles())
                 if (file.getType().equals(ChangedFile.Type.ADD)) {
                     try {
+                        /*
+                          TODO: обработать ситуацию, когда приходит файл, с неизвестным нам расширением.
+                           То есть мы не умеем его обрабатывать.
+                           Дать знать об этом пользователю, то есть выкинуть ошибку, залогировать её и обработать
+                         */
                         String name = file.getFile().getName();
                         String[] split = name.split("\\.");
                         fileProcessServicesMap.get(split[split.length - 1]).processFile(name);
