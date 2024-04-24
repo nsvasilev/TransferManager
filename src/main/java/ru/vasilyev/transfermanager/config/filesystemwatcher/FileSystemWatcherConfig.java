@@ -3,25 +3,30 @@ package ru.vasilyev.transfermanager.config.filesystemwatcher;
 import jakarta.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.devtools.filewatch.FileSystemWatcher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import ru.vasilyev.transfermanager.property.FileSystemWatcherProperties;
-import ru.vasilyev.transfermanager.services.FileProcessService;
+import ru.vasilyev.transfermanager.services.IFileProcessService;
 
 import java.io.File;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
-@Configuration
+
 @Slf4j
-@EnableConfigurationProperties(FileSystemWatcherProperties.class)
+@Configuration
 public class FileSystemWatcherConfig {
-    private final FileProcessService fileProcessService;
+
+    private final Map<String, IFileProcessService> fileProcessServicesMap;
     private final FileSystemWatcherProperties fileSystemWatcherProperties;
+
     @Autowired
-    public FileSystemWatcherConfig(FileProcessService fileProcessService, FileSystemWatcherProperties fileSystemWatcherProperties) {
-        this.fileProcessService = fileProcessService;
+    public FileSystemWatcherConfig(List<IFileProcessService> fileProcessServicesList, FileSystemWatcherProperties fileSystemWatcherProperties) {
         this.fileSystemWatcherProperties = fileSystemWatcherProperties;
+        fileProcessServicesMap = fileProcessServicesList.stream().collect(Collectors.toMap(IFileProcessService::getExtension, Function.identity()));
     }
 
     @Bean
@@ -34,7 +39,7 @@ public class FileSystemWatcherConfig {
                 fileSystemWatcherProperties.quietPeriod()
         );
         fileSystemWatcher.addSourceDirectory(new File(fileSystemWatcherProperties.processPathDirectory()));
-        fileSystemWatcher.addListener(new CustomerAddFileChangeListener(fileProcessService));
+        fileSystemWatcher.addListener(new CustomerAddFileChangeListener(fileProcessServicesMap));
         fileSystemWatcher.start();
         log.info("FileSystemWatcher conceived and ready to go");
         return fileSystemWatcher;

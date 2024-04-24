@@ -1,4 +1,4 @@
-package ru.vasilyev.transfermanager.interfaces;
+package ru.vasilyev.transfermanager.component;
 
 import java.io.IOException;
 

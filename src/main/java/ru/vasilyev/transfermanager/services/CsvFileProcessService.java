@@ -2,7 +2,6 @@ package ru.vasilyev.transfermanager.services;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
 import ru.vasilyev.transfermanager.component.*;
 import ru.vasilyev.transfermanager.dto.BankUserDto;
@@ -24,8 +23,7 @@ import java.util.List;
  */
 @Service
 @Slf4j
-@EnableConfigurationProperties(FileSystemWatcherProperties.class)
-public class FileProcessService {
+public class CsvFileProcessService implements IFileProcessService {
 
     private final ExcelParser excelParser;
     private final ExcelValidator excelValidator;
@@ -36,7 +34,7 @@ public class FileProcessService {
     private final ErrorHandler errorHandler; //добавили обработчика ошибок
 
     @Autowired
-    public FileProcessService(ExcelParser excelParser, CSVParser csvParser, CSVValidator csvValidator, ExcelValidator excelValidator, BankUserRepository bankUserRepository, FileSystemWatcherProperties fileSystemWatcherProperties, ErrorHandler errorHandler) {
+    public CsvFileProcessService(ExcelParser excelParser, CSVParser csvParser, CSVValidator csvValidator, ExcelValidator excelValidator, BankUserRepository bankUserRepository, FileSystemWatcherProperties fileSystemWatcherProperties, ErrorHandler errorHandler) {
         this.excelParser = excelParser;
         this.csvParser = csvParser;//!!!
         this.csvValidator = csvValidator;
@@ -93,6 +91,11 @@ public class FileProcessService {
                 log.info("Файл " + fileName + " был направлен в папку Error");
             }
         }
+    }
+
+    @Override
+    public String getExtension() {
+        return "csv";
     }
 }
 

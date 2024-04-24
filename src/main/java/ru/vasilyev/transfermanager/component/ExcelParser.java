@@ -2,11 +2,13 @@ package ru.vasilyev.transfermanager.component;
 
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Component;
 import ru.vasilyev.transfermanager.dto.BankUserDto;
-import ru.vasilyev.transfermanager.interfaces.FileParser;
 import ru.vasilyev.transfermanager.property.FileSystemWatcherProperties;
 
 import java.io.FileInputStream;
@@ -15,13 +17,16 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+
 @Component
 @Slf4j
 public class ExcelParser implements FileParser {
     private final FileSystemWatcherProperties fileSystemWatcherProperties;
+
     public ExcelParser(FileSystemWatcherProperties fileSystemWatcherProperties) {
         this.fileSystemWatcherProperties = fileSystemWatcherProperties;
     }
+
     public List<BankUserDto> readFile(String fileName) {
         try (FileInputStream fis = new FileInputStream(fileSystemWatcherProperties.processPathDirectory() + fileName)) {
             Workbook workbook = new XSSFWorkbook(fis);
@@ -36,7 +41,7 @@ public class ExcelParser implements FileParser {
                 bankUserDto.setLastname(dataFormatter.formatCellValue(row.getCell(1)));
                 bankUserDto.setPatronymic(dataFormatter.formatCellValue(row.getCell(2)));
                 bankUserDto.setGender(dataFormatter.formatCellValue(row.getCell(3)));
-                bankUserDto.setBirthDate(LocalDate.parse(row.getCell(4).getStringCellValue(),pattern));
+                bankUserDto.setBirthDate(LocalDate.parse(row.getCell(4).getStringCellValue(), pattern));
                 bankUserDto.setBalance(Double.parseDouble(dataFormatter.formatCellValue(row.getCell(5))));
                 bankUserDtoList.add(bankUserDto);
             }

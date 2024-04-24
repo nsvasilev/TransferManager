@@ -4,16 +4,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.devtools.filewatch.ChangedFile;
 import org.springframework.boot.devtools.filewatch.ChangedFiles;
 import org.springframework.boot.devtools.filewatch.FileChangeListener;
-import ru.vasilyev.transfermanager.services.FileProcessService;
+import ru.vasilyev.transfermanager.services.IFileProcessService;
 
-import java.io.IOException;
+import java.util.Map;
 import java.util.Set;
 
 @Slf4j
 public class CustomerAddFileChangeListener implements FileChangeListener {
-    private final FileProcessService fileProcessService;
-    public CustomerAddFileChangeListener(FileProcessService fileProcessService) {
-        this.fileProcessService = fileProcessService;
+    private final Map<String, IFileProcessService> fileProcessServicesMap;
+
+    public CustomerAddFileChangeListener(Map<String, IFileProcessService> fileProcessServicesMap) {
+        this.fileProcessServicesMap = fileProcessServicesMap;
     }
 
     @Override
@@ -22,8 +23,10 @@ public class CustomerAddFileChangeListener implements FileChangeListener {
             for (ChangedFile file : files.getFiles())
                 if (file.getType().equals(ChangedFile.Type.ADD)) {
                     try {
-                        fileProcessService.processFile(file.getFile().getName());
-                    } catch (IOException e) {
+                        String name = file.getFile().getName();
+                        String[] split = name.split("\\.");
+                        fileProcessServicesMap.get(split[split.length - 1]).processFile(name);
+                    } catch (Exception e) {
                         log.info("ошибка при обработке файла" + e.getMessage());
                     }
                 }
