@@ -9,15 +9,15 @@ public interface IFileProcessService {
     /**
      * Метод, который будет обрабатывать целевые файлы
      *
-     * @param fileName
-     * @throws Exception
+     * @param fileName - файл, пришедший на вход, готовый к проверке и обработке
+     * @throws Exception - ошибки при обработке расширения файла
      */
     void processFile(String fileName) throws Exception;
 
     /**
      * Метод, который возвращает тип файла и будет обрабатывать сервис-обработчик-имплементация
      *
-     * @return
+     *
      */
     String getExtension();
 }
