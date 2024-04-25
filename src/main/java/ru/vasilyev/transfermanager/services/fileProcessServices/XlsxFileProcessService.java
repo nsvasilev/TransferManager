@@ -1,4 +1,4 @@
-package ru.vasilyev.transfermanager.services;
+package ru.vasilyev.transfermanager.services.fileProcessServices;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,14 +15,15 @@ import java.nio.file.Paths;
 import java.util.List;
 @Slf4j
 @Service
-public class XlsxFileProcessService implements IFileProcessService {
+public class XlsxFileProcessService extends AbstractFileProcessService {
 
     private final ExcelValidator excelValidator;
     private final ExcelParser excelParser;
     private final BankUserRepository bankUserRepository;
     private final FileSystemWatcherProperties fileSystemWatcherProperties;
 
-    public XlsxFileProcessService(ExcelValidator excelValidator, ExcelParser excelParser, BankUserRepository bankUserRepository, FileSystemWatcherProperties fileSystemWatcherProperties) {
+    public XlsxFileProcessService(FileMover fileMover, ExcelValidator excelValidator, ExcelParser excelParser, BankUserRepository bankUserRepository, FileSystemWatcherProperties fileSystemWatcherProperties) {
+        super(fileMover);
         this.excelValidator = excelValidator;
         this.excelParser = excelParser;
         this.bankUserRepository = bankUserRepository;
@@ -37,7 +38,7 @@ public class XlsxFileProcessService implements IFileProcessService {
             List<BankUserDto> bankUsersDtoList = excelParser.readFile(fileName);
             List<BankUserEntity> bankUsersEntityList = bankUsersDtoList.stream().map(user -> new BankUserEntity(user.getFirstname(), user.getLastname(), user.getPatronymic(), user.getGender(), user.getBirthDate(), user.getBalance())).toList();
             bankUserRepository.saveAll(bankUsersEntityList);
-            FileMover.moveToSuccess(fileName);
+            fileMover.moveToSuccess(fileName);
             log.info("Файл " +fileName + " прошел валидацию. Перемещаю в success");
         } else {
             log.info("Файл " + fileName + " не прошёл вторичную валидацию. Неправильная структура");
@@ -45,8 +46,8 @@ public class XlsxFileProcessService implements IFileProcessService {
             Path error = Paths.get(fileSystemWatcherProperties.errorPathDirectory() + fileName);
             Files.move(process, error);
         }
-
     }
+
     @Override
     public String getExtension() {
         return "xlsx";

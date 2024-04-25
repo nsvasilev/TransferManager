@@ -1,25 +1,22 @@
 package ru.vasilyev.transfermanager.utils;
 
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 import ru.vasilyev.transfermanager.property.FileSystemWatcherProperties;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
 
-
+/**
+ * TODO: - зачем тут fileSystemWatcherProperties если ты захардкодил пути
+ * Зачем ьы захардкодил, если у тебя есть fileSystemWatcherProperties
+ */
+@Component
 public class FileMover {
-    private final FileSystemWatcherProperties fileSystemWatcherProperties;
-
-
-    public FileMover(FileSystemWatcherProperties fileSystemWatcherProperties) {
-        this.fileSystemWatcherProperties = fileSystemWatcherProperties;
-    }
-
-
-    public static void moveToSuccess (String fileName) throws IOException {
-        Path path1 = Path.of("ts-files\\process\\" + fileName);
-        Path path2 = Path.of("ts-files\\success\\" + fileName);
-        Files.move(path1, path2);
+    public void moveToSuccess (File targetFile, File targetPath) throws IOException {
+        Files.move(targetFile.toPath(), targetPath.toPath());
     }
 }

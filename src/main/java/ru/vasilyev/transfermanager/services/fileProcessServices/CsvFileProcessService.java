@@ -1,4 +1,4 @@
-package ru.vasilyev.transfermanager.services;
+package ru.vasilyev.transfermanager.services.fileProcessServices;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ import java.util.List;
  */
 @Service
 @Slf4j
-public class CsvFileProcessService implements IFileProcessService {
+public class CsvFileProcessService extends AbstractFileProcessService {
 
 
     private final CSVParser csvParser;
@@ -35,7 +35,8 @@ public class CsvFileProcessService implements IFileProcessService {
 
 
     @Autowired
-    public CsvFileProcessService(CSVParser csvParser, CSVValidator csvValidator, BankUserRepository bankUserRepository, FileSystemWatcherProperties fileSystemWatcherProperties, ErrorHandler errorHandler) {
+    public CsvFileProcessService(FileMover fileMover, CSVParser csvParser, CSVValidator csvValidator, BankUserRepository bankUserRepository, FileSystemWatcherProperties fileSystemWatcherProperties, ErrorHandler errorHandler) {
+        super(fileMover);
         this.csvParser = csvParser;
         this.csvValidator = csvValidator;
         this.bankUserRepository = bankUserRepository;
@@ -49,7 +50,7 @@ public class CsvFileProcessService implements IFileProcessService {
             List<BankUserDto> bankUsersDtoList = csvParser.readFile(fileName);
             List<BankUserEntity> bankUsersEntityList = bankUsersDtoList.stream().map(user -> new BankUserEntity(user.getFirstname(), user.getLastname(), user.getPatronymic(), user.getGender(), user.getBirthDate(), user.getBalance())).toList();
             bankUserRepository.saveAll(bankUsersEntityList);
-            FileMover.moveToSuccess(fileName);
+            fileMover.moveToSuccess(fileName);
             log.info("Файл " + fileName + " прошел валидацию. Перемещаю в success");
         } else {
             log.info("Файл " + fileName + " не прошёл вторичную валидацию. Неправильная структура");
