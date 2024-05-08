@@ -3,6 +3,8 @@ package ru.vasilyev.transfermanager.services.fileProcessServices;
 import ru.vasilyev.transfermanager.services.IFileProcessService;
 import ru.vasilyev.transfermanager.utils.FileMover;
 
+import java.io.File;
+
 /**
  * Сюда бы я вынес перемещение файлов с помощью протектед-методов, и бины, которые универсальные для всех типов FileProcessService
  * 1. В файл кастомере передавать не имя файла, а объект файла, тогда мы избежим кучу склеек по типу fileSystemWatcherProperties.processPathDirectory() + fileName
@@ -10,7 +12,7 @@ import ru.vasilyev.transfermanager.utils.FileMover;
  * 3. Тогда мы сможем в этот абстрактный класс внедрять через наследников универсальыне бины, и сюда вынести общие бины, они будут протектед
  * 4. Нужно будет вспомнить абстрактные методы, и модификатор protected.
  */
-public class AbstractFileProcessService implements IFileProcessService {
+public abstract class AbstractFileProcessService implements IFileProcessService {
 
     protected final FileMover fileMover;
 
@@ -20,12 +22,8 @@ public class AbstractFileProcessService implements IFileProcessService {
 
 
     @Override
-    public void processFile(String fileName) throws Exception {
-
-    }
+    public abstract void processFile(File fileName) throws Exception;
 
     @Override
-    public String getExtension() {
-        return null;
-    }
+    public abstract String getExtension();
 }

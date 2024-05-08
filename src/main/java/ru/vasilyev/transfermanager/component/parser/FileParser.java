@@ -1,7 +1,8 @@
-package ru.vasilyev.transfermanager.component;
+package ru.vasilyev.transfermanager.component.parser;
 
 import ru.vasilyev.transfermanager.dto.BankUserDto;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -10,5 +11,5 @@ import java.util.List;
  */
 public interface FileParser {
 
-    List<BankUserDto> readFile(String fileName);
+    List<BankUserDto> readFile(File fileName);
 }

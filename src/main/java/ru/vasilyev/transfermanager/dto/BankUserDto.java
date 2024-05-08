@@ -1,4 +1,7 @@
 package ru.vasilyev.transfermanager.dto;
+/**
+ * класс с указанием dto.
+ */
 
 import com.opencsv.bean.CsvBindByPosition;
 import com.opencsv.bean.CsvCustomBindByPosition;

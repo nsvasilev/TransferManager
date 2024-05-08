@@ -6,16 +6,17 @@ import org.springframework.boot.devtools.filewatch.ChangedFiles;
 import org.springframework.boot.devtools.filewatch.FileChangeListener;
 import ru.vasilyev.transfermanager.services.IFileProcessService;
 
+import java.io.File;
 import java.util.Map;
 import java.util.Set;
 
 @Slf4j
 public class CustomerAddFileChangeListener implements FileChangeListener {
     private final Map<String, IFileProcessService> fileProcessServicesMap;
-
+    //создаем филд мапу.
     public CustomerAddFileChangeListener(Map<String, IFileProcessService> fileProcessServicesMap) {
         this.fileProcessServicesMap = fileProcessServicesMap;
-    }
+    } // создаем конструктор
 
     @Override
     public void onChange(Set<ChangedFiles> changeSet) {
@@ -29,8 +30,9 @@ public class CustomerAddFileChangeListener implements FileChangeListener {
                            Дать знать об этом пользователю, то есть выкинуть ошибку, залогировать её и обработать
                          */
                         String name = file.getFile().getName();
+                        File file1 = file.getFile();
                         String[] split = name.split("\\.");
-                        fileProcessServicesMap.get(split[split.length - 1]).processFile(name);
+                        fileProcessServicesMap.get(split[split.length - 1]).processFile(file1); //todo последняя ошибка была тут. Скрин есть
                     } catch (Exception e) {
                         log.info("ошибка при обработке файла" + e.getMessage());
                     }

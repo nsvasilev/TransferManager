@@ -9,6 +9,9 @@ import lombok.Setter;
 import java.time.LocalDate;
 import java.util.Date;
 
+/**
+ * Класс с указанием табличных значений для базы данных.
+ */
 @Entity
 @NoArgsConstructor
 @Getter

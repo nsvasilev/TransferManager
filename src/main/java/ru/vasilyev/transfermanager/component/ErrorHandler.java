@@ -10,23 +10,35 @@ import java.nio.file.Path;
 import java.util.Timer;
 import java.util.TimerTask;
 
-
+/**
+ * класс ErrorHandler предназначен для очистки директории Error,
+ * после постулпения туда файлов
+ * На данный момент класс не является рабочим
+ *
+ */
 @Slf4j
 @Component
 public class ErrorHandler  {
-    private final FileSystemWatcherProperties fileSystemWatcherProperties;
+    private final FileSystemWatcherProperties fileSystemWatcherProperties; // добавляем филд
     public ErrorHandler(FileSystemWatcherProperties fileSystemWatcherProperties) {
         this.fileSystemWatcherProperties = fileSystemWatcherProperties;
-    }
-    public void clearError(String fileName) {
+    } // создаем конструктор с этим филдом
+
+    /**
+     * создается метод clearError, принимающий в параметрах название файла
+     * необходимо доработать метод, он не работает
+     */
+    public void clearError(String fileName){
         Timer timer;
         timer = new Timer();
         timer.schedule(new TimerTask()
         {
-            @Override
+            @Override //переопеделение метода run.
             public void run() {
                 try {
-                    Files.newDirectoryStream(Path.of(fileSystemWatcherProperties.errorPathDirectory()), Files::isRegularFile)
+                    Files.newDirectoryStream(fileSystemWatcherProperties.errorPathDirectory().toPath(), Files::isRegularFile)
+                            // происходит перебор всех файлов в директории Error.
+                            //ниже указана процедура удаления файла из директории
                             .forEach(p -> {
                                 try {
                                     Files.delete(p);

@@ -2,6 +2,7 @@ package ru.vasilyev.transfermanager.property;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import java.io.File;
 import java.time.Duration;
 
 
@@ -18,7 +19,7 @@ public record FileSystemWatcherProperties(
         boolean daemon,
         Duration pollInterval,
         Duration quietPeriod,
-        String successPathDirectory,
-        String processPathDirectory,
-        String errorPathDirectory) {
+        File successPathDirectory,
+        File processPathDirectory,
+        File errorPathDirectory) {
 }
