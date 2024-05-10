@@ -15,10 +15,6 @@ import java.util.UUID;
 @Component
 public class FileMover {
     public void moveToTargetDirectory(File targetFile, File targetPath) throws IOException {
-
-        Files.move(targetFile.toPath(), Path.of(targetPath+ UUID.randomUUID().toString()+targetFile.getName()));
+        Files.move(targetFile.toPath(), Path.of(targetPath + "\\" + UUID.randomUUID() + targetFile.getName()));
     }
-
-
-
 }
