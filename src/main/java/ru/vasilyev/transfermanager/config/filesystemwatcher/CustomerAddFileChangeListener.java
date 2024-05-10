@@ -15,6 +15,7 @@ import java.util.UUID;
 @Slf4j
 public class CustomerAddFileChangeListener implements FileChangeListener {
     private final Map<String, IFileProcessService> fileProcessServicesMap;
+
     //создаем филд мапу.
     public CustomerAddFileChangeListener(Map<String, IFileProcessService> fileProcessServicesMap) {
         this.fileProcessServicesMap = fileProcessServicesMap;
@@ -31,10 +32,12 @@ public class CustomerAddFileChangeListener implements FileChangeListener {
                            То есть мы не умеем его обрабатывать.
                            Дать знать об этом пользователю, то есть выкинуть ошибку, залогировать её и обработать
                          */
-                        String name = file.getFile().getName();
-                        File file1 = file.getFile();
-                        String[] split = name.split("\\.");
-                        fileProcessServicesMap.get(split[split.length - 1]).processFile(file1);
+                        String targetFileName = file.getFile().getName();
+                        File targetFile = file.getFile();
+                        String[] split = targetFileName.split("\\.");
+                        String keyProcessServiceService = split[split.length - 1];
+                        fileProcessServicesMap.getOrDefault(keyProcessServiceService,
+                                fileProcessServicesMap.get("unexpected")).processFile(targetFile);
                     } catch (Exception e) {
                         log.info("ошибка при обработке файла" + e.getMessage());
                         e.printStackTrace();
