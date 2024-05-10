@@ -7,8 +7,10 @@ import org.springframework.boot.devtools.filewatch.FileChangeListener;
 import ru.vasilyev.transfermanager.services.IFileProcessService;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 @Slf4j
 public class CustomerAddFileChangeListener implements FileChangeListener {
@@ -32,9 +34,10 @@ public class CustomerAddFileChangeListener implements FileChangeListener {
                         String name = file.getFile().getName();
                         File file1 = file.getFile();
                         String[] split = name.split("\\.");
-                        fileProcessServicesMap.get(split[split.length - 1]).processFile(file1); //todo последняя ошибка была тут. Скрин есть
+                        fileProcessServicesMap.get(split[split.length - 1]).processFile(file1);
                     } catch (Exception e) {
                         log.info("ошибка при обработке файла" + e.getMessage());
+                        e.printStackTrace();
                     }
                 }
     }

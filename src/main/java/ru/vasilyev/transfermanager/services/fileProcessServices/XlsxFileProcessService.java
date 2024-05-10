@@ -11,6 +11,9 @@ import ru.vasilyev.transfermanager.repostitory.BankUserRepository;
 import ru.vasilyev.transfermanager.utils.FileMover;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 @Slf4j
 @Service
@@ -42,10 +45,8 @@ public class XlsxFileProcessService extends AbstractFileProcessService {
          fileMover.moveToTargetDirectory(file,fileSystemWatcherProperties.successPathDirectory());
             log.info("Файл " +file + " прошел валидацию. Перемещаю в success");
         } else {
+            fileMover.moveToTargetDirectory(file,fileSystemWatcherProperties.errorPathDirectory());
             log.info("Файл " + file + " не прошёл вторичную валидацию. Неправильная структура");
-//            Path process = Paths.get(fileSystemWatcherProperties.processPathDirectory() + fileName);
-//            Path error = Paths.get(fileSystemWatcherProperties.errorPathDirectory() + fileName);
-//            Files.move(process, error);
         }
     }
 
