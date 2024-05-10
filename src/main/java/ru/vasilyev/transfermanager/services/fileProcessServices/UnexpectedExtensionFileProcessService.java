@@ -4,6 +4,11 @@ import ru.vasilyev.transfermanager.utils.FileMover;
 
 import java.io.File;
 
+/**
+ * Этот сервис должен, во-первых, логировать приход и перемещение файла
+ * Во-вторых, перемещение файла
+ * В-третьих - сохранить сведения о файле в БД
+ */
 public class UnexpectedExtensionFileProcessService extends AbstractFileProcessService{
     public UnexpectedExtensionFileProcessService(FileMover fileMover) {
         super(fileMover);
