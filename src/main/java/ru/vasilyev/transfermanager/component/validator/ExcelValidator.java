@@ -19,9 +19,9 @@ import java.io.IOException;
 @Component
 public class ExcelValidator implements FileValidator {
     @Override
-    public boolean checkStructure(File file) {
+    public boolean checkStructure(File file1) {
         int cellsNum; //переменная для подсчета столбцов в файле
-        try (FileInputStream fis = new FileInputStream(file);
+        try (FileInputStream fis = new FileInputStream(file1);
              Workbook workbook = new XSSFWorkbook(fis)) {
             cellsNum = workbook.getSheetAt(0).getRow(0).getPhysicalNumberOfCells();
             // сразу придаем значение ранее созданной переменной

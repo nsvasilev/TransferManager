@@ -35,18 +35,18 @@ public class XlsxFileProcessService extends AbstractFileProcessService {
     }
 
     @Override
-    public void processFile(File file) throws Exception {
-        if  (excelValidator.checkStructure(file)) {
+    public void processFile(File file1) throws Exception {
+        if  (excelValidator.checkStructure(file1)) {
             //TODO: указать имя файла, лог события должен быть после события(кроме выбрасывания исключений ). Ты перемещаешь файл только через 5 строк кода
             //successMoving(fileName, excelParser.readFile(fileName), bankUserRepository, fileSystemWatcherProperties);
-            List<BankUserDto> bankUsersDtoList = excelParser.readFile(file);
+            List<BankUserDto> bankUsersDtoList = excelParser.readFile(file1);
             List<BankUserEntity> bankUsersEntityList = bankUsersDtoList.stream().map(user -> new BankUserEntity(user.getFirstname(), user.getLastname(), user.getPatronymic(), user.getGender(), user.getBirthDate(), user.getBalance())).toList();
             bankUserRepository.saveAll(bankUsersEntityList);
-         fileMover.moveToTargetDirectory(file,fileSystemWatcherProperties.successPathDirectory());
-            log.info("Файл " +file + " прошел валидацию. Перемещаю в success");
+         fileMover.moveToTargetDirectory(file1,fileSystemWatcherProperties.successPathDirectory());
+            log.info("Файл " +file1 + " прошел валидацию. Перемещаю в success");
         } else {
-            fileMover.moveToTargetDirectory(file,fileSystemWatcherProperties.errorPathDirectory());
-            log.info("Файл " + file + " не прошёл вторичную валидацию. Неправильная структура");
+            fileMover.moveToTargetDirectory(file1,fileSystemWatcherProperties.errorPathDirectory());
+            log.info("Файл " + file1 + " не прошёл вторичную валидацию. Неправильная структура");
         }
     }
 

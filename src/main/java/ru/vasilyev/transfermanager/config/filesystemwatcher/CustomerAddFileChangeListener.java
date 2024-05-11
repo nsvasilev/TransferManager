@@ -38,10 +38,14 @@ public class CustomerAddFileChangeListener implements FileChangeListener {
                         String keyProcessServiceService = split[split.length - 1];
                         fileProcessServicesMap.getOrDefault(keyProcessServiceService,
                                 fileProcessServicesMap.get("unexpected")).processFile(targetFile);
+                    }
+                    catch (NullPointerException ex) {
+                        log.info("вышел нал поинтер эксепшн" + file);
                     } catch (Exception e) {
                         log.info("ошибка при обработке файла" + e.getMessage());
                         e.printStackTrace();
                     }
                 }
+                }
     }
-}
+

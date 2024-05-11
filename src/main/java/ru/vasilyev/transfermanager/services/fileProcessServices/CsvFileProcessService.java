@@ -38,7 +38,7 @@ public class CsvFileProcessService extends AbstractFileProcessService {
         this.csvParser = csvParser;
         this.csvValidator = csvValidator;
         this.bankUserRepository = bankUserRepository;
-        this.fileMover = fileMover1;
+        this.fileMover = fileMover;
         this.fileSystemWatcherProperties = fileSystemWatcherProperties1;
     }
 
@@ -52,6 +52,7 @@ public class CsvFileProcessService extends AbstractFileProcessService {
             log.info("Файл " + file + " прошел валидацию. Перемещаю в success");
         } else {
             log.info("Файл " + file + " не прошёл вторичную валидацию. Неправильная структура");
+            fileMover.moveToTargetDirectory(file,fileSystemWatcherProperties.errorPathDirectory());
             log.info("Файл " + file + " был направлен в папку Error");
         }
 
