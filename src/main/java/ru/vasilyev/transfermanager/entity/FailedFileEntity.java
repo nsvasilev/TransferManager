@@ -11,13 +11,13 @@ import java.time.LocalDateTime;
 /**
  * В зибернейте есть соглашение, слова разделяются '_' и начинаются с маленькой буквы.
  * Соответсвенно, в базе заранее нужно создать таблицу, которая соответствует этому соглашению
- *
  * Мы договорились переименовать в
  */
 @Entity
 @NoArgsConstructor
 @Getter
 @Setter
+@Table(name = "failed_file")
 public class FailedFileEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
