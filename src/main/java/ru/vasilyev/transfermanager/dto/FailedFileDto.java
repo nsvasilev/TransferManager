@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ErrorFileDTO {
+public class FailedFileDto {
    private String pathOfFile;
    private LocalDate dateOfAppearance;
    private long size;

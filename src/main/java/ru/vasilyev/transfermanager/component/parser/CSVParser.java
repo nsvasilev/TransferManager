@@ -16,6 +16,7 @@ import java.util.List;
 @Component
 @Slf4j
 public class CSVParser implements FileParser {
+
     private final FileSystemWatcherProperties fileSystemWatcherProperties;
 
     public CSVParser(FileSystemWatcherProperties fileSystemWatcherProperties) {

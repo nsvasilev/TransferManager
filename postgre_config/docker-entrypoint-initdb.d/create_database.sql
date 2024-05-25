@@ -11,3 +11,10 @@ CREATE TABLE bank_user(
     birth_date date not null,
     balance decimal(10,2) not null
 );
+
+create table failed_file(
+    id serial PRIMARY KEY,
+    path_of_file varchar(255),
+    date_of_appearance timestamp,
+    size bigint
+);
