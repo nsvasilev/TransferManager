@@ -12,14 +12,17 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name= "unexpented_file")
+@Table(name= "error_file")
 public class UnexpectedExtensionFileEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "pathoffile")
     private String pathOfFile;
+    @Column(name = "dateofappearance")
     private LocalDate dateOfAppearance;
     private long size;
+
 
     public UnexpectedExtensionFileEntity(Long id, String pathOfFile, LocalDate dateOfAppearance, long size) {
         this.id = id;

@@ -22,7 +22,7 @@ public class CSVParser implements FileParser {
         this.fileSystemWatcherProperties = fileSystemWatcherProperties;
     }
     /**
-    CSVParser -  Класс, предназнанченный для парсирования csv файлов.
+     * CSVParser -  Класс, предназнанченный для парсирования csv файлов.
      */
     @Override //аннотация переопрделения
     public List<BankUserDto> readFile(File fileName) {
