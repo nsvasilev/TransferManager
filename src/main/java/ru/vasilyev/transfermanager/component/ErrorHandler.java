@@ -42,9 +42,9 @@ public class ErrorHandler  {
                             .forEach(p -> {
                                 try {
                                     Files.delete(p);
-                                    log.info("Файл" + fileName + "был удален. Сработал clearError");
+                                    log.info("Файл {} был удален. Сработал clearError",fileName);
                                 } catch (IOException ignored) {
-                                    log.info("ошибка при удалении файла");
+                                    log.error("ошибка при удалении файла");
                                 }
                             });
 
