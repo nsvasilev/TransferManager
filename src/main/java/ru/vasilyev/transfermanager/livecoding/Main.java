@@ -18,8 +18,11 @@ public class Main {
         department.addEmployee(new Employee("f3", "l3", 1000));
 
         //1. Собрать статистику по зарплатам сотрудников в заданном подразделении. count, sum, max, min, avg
-        DoubleSummaryStatistics collect = department.getEmployees().stream().collect(Collectors.summarizingDouble(Employee::getSalary));
-        System.out.println(collect);
+//        DoubleSummaryStatistics collect = department.getEmployees().stream().collect(Collectors.summarizingDouble(Employee::getSalary));
+//        System.out.println(collect);
+
+        DoubleSummaryStatistics summaryStatistics = department.getEmployees().stream().collect(Collectors.summarizingDouble(Employee::getSalary));
+        System.out.println(summaryStatistics);
     }
 
 

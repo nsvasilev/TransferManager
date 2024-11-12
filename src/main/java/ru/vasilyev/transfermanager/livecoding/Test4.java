@@ -9,10 +9,12 @@ public class Test4 {
         integers.stream()
                 .peek(System.out::println);
 
+        System.out.println("---------------------");
+
         integers.stream()
                 .peek(System.out::println)
                 .forEachOrdered(System.out::println);
-//
+        System.out.println("---------------------");
 
         integers.stream()
                 .peek(System.out::println)
